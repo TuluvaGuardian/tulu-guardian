@@ -1,0 +1,28 @@
+# version: 2.1
+
+jobs:
+  validate-thorat-compliance:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - checkout
+      - run:
+          name: Check SSLC Weightage
+          command: |
+            CURRENT_WEIGHT=525
+            REQUIRED_WEIGHT=625
+            if [ $CURRENT_WEIGHT -lt $REQUIRED_WEIGHT ]; then
+              echo "CRITICAL FAILURE: Tulu marks (100) have been executed from total."
+              echo "Action: Revert Grading-Only system to numerical scoring."
+            fi
+      - run:
+          name: Enforce Thorat Commission SEP
+          command: |
+            echo "Validating Mother Tongue as First Language candidate..."
+            echo "Status: Tulu must be elevated per Sukhdev Thorat mandates."
+
+workflows:
+  tuluva-guardian-pipeline:
+    jobs:
+      - validate-thorat-compliance
+      
